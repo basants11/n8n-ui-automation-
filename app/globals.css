@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --primary: 263 70% 50%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 222 47% 11%;
+    --card: 222 47% 14%;
+    --card-foreground: 210 40% 98%;
+    --border: 217 33% 25%;
+    --input: 217 33% 25%;
+    --ring: 263 70% 50%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Glassmorphism utilities */
+.glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10;
+}
+
+.glass-card {
+  @apply bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl;
+}
+
+.glass-card-hover {
+  @apply glass-card transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent;
+}
+
+/* Glowing button */
+.glow-button {
+  @apply relative px-6 py-3 rounded-xl font-semibold text-white overflow-hidden;
+}
+
+.glow-button::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 opacity-0 transition-opacity duration-300;
+}
+
+.glow-button:hover::before {
+  @apply opacity-100;
+}
+
+.glow-button::after {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 blur-xl opacity-50 animate-pulse-slow;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground;
+}
+
+/* Background patterns */
+.bg-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Animations */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
