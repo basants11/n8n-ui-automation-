@@ -10,13 +10,15 @@ import {
   BarChart3, 
   Settings,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Plus
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store/useAppStore'
 
 const navItems = [
   { href: '/dashboard', label: 'My Workflows', icon: Workflow },
+  { href: '/workflow/builder', label: 'Workflow Builder', icon: Plus },
   { href: '/templates', label: 'Templates', icon: LayoutTemplate },
   { href: '/ai-builder', label: 'AI Builder', icon: Sparkles },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
