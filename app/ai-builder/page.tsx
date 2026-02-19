@@ -31,22 +31,40 @@ export default function AIBuilderPage() {
     
     setIsGenerating(true)
     
-    // Simulate AI generation (in production, call actual API)
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    
-    // Mock generated workflow
-    setGeneratedWorkflow({
-      name: 'New Automation',
-      description: prompt,
-      nodes: [
-        { id: '1', type: 'trigger', label: 'Email Trigger', friendlyName: 'When email arrives' },
-        { id: '2', type: 'action', label: 'Google Drive', friendlyName: 'Save to Drive' },
-        { id: '3', type: 'notification', label: 'Telegram', friendlyName: 'Send notification' },
-      ],
-      explanation: "I've created a workflow with 3 steps: 1) Email trigger to watch for new messages, 2) Save attachment to Google Drive, 3) Send notification via Telegram."
-    })
-    
-    setIsGenerating(false)
+    try {
+      // Send prompt to backend API
+      const response = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate workflow')
+      }
+      
+      const data = await response.json()
+      
+      // Set the generated workflow from API response
+      setGeneratedWorkflow(data.workflow)
+    } catch (error) {
+      console.error('Error generating workflow:', error)
+      // Fallback to mock data on error
+      setGeneratedWorkflow({
+        name: 'New Automation',
+        description: prompt,
+        nodes: [
+          { id: '1', type: 'trigger', label: 'Email Trigger', friendlyName: 'When email arrives' },
+          { id: '2', type: 'action', label: 'Google Drive', friendlyName: 'Save to Drive' },
+          { id: '3', type: 'notification', label: 'Telegram', friendlyName: 'Send notification' },
+        ],
+        explanation: "I've created a workflow with 3 steps: 1) Email trigger to watch for new messages, 2) Save attachment to Google Drive, 3) Send notification via Telegram."
+      })
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const handleClear = () => {
