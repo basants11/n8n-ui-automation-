@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Automation - Powerful Workflow Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6d5a;
+            --primary-dark: #e55a47;
+            --secondary: #2d3748;
+            --accent: #00d4aa;
+            --dark: #0f172a;
+            --darker: #0a0f1c;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(255, 109, 90, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(45, 55, 72, 0.3) 0%, transparent 70%);
+        }
+
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 15, 28, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray-300);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--gray-300);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge span {
+            color: var(--accent);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray-400);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 20px rgba(255, 109, 90, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 109, 90, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-400);
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray-400);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(255, 109, 90, 0.2), rgba(255, 109, 90, 0.1));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--gray-400);
+            font-size: 0.95rem;
+        }
+
+        /* Use Cases */
+        .use-cases {
+            background: linear-gradient(180deg, transparent, rgba(255, 109, 90, 0.05), transparent);
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .use-case-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .use-case-card:hover::before {
+            opacity: 1;
+        }
+
+        .use-case-card:hover {
+            transform: translateX(5px);
+        }
+
+        .use-case-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: rgba(255, 109, 90, 0.2);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+        }
+
+        .use-case-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--light);
+        }
+
+        .use-case-card ul {
+            list-style: none;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .use-case-card li {
+            padding: 0.25rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .use-case-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Getting Started */
+        .getting-started {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .install-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .install-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .install-card code {
+            display: block;
+            background: var(--darker);
+            border: 1px solid var(--gray-600);
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .install-card .note {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+
+        /* Architecture */
+        .architecture {
+            text-align: center;
+        }
+
+        .arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .arch-node {
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            min-width: 180px;
+            transition: all 0.3s ease;
+        }
+
+        .arch-node:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .arch-node.start {
+            border-color: var(--accent);
+        }
+
+        .arch-node.process {
+            border-color: var(--primary);
+        }
+
+        .arch-node.end {
+            border-color: #a78bfa;
+        }
+
+        .arch-arrow {
+            font-size: 2rem;
+            color: var(--gray-500);
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            text-align: left;
+            margin-top: 3rem;
+        }
+
+        .component-item {
+            padding: 1.5rem;
+            background: var(--glass);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .component-item h4 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-item p {
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        /* Integrations */
+        .integrations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .integration-category {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .integration-category h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .integration-category ul {
+            list-style: none;
+        }
+
+        .integration-category li {
+            padding: 0.4rem 0;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        /* Best Practices */
+        .practices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .practice-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+        }
+
+        .practice-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .practice-card ul {
+            list-style: none;
+        }
+
+        .practice-card li {
+            padding: 0.4rem 0;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .practice-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Workflow Examples */
+        .workflow-examples {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .workflow-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+
+        .workflow-item:hover {
+            border-color: var(--primary);
+        }
+
+        .workflow-name {
+            font-weight: 600;
+            min-width: 180px;
+            color: var(--light);
+        }
+
+        .workflow-flow {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            color: var(--gray-400);
+            font-size: 0.9rem;
+        }
+
+        .workflow-node {
+            background: var(--darker);
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            border: 1px solid var(--gray-600);
+        }
+
+        .workflow-arrow {
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 109, 90, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            color: var(--gray-400);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .stats {
+                gap: 2rem;
+            }
+
+            .arch-diagram {
+                flex-direction: column;
+            }
+
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-600);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-500);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-pattern"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            <div class="nav-logo-icon">n8n</div>
+            <span>Automation</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#use-cases">Use Cases</a></li>
+            <li><a href="#getting-started">Get Started</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#integrations">Integrations</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ✨ Open Source Workflow Automation
+            </div>
+            <h1>Automate Your Business with <span class="gradient-text">n8n</span></h1>
+            <p>Connect your apps, automate workflows, and save time with the powerful free and open-source workflow automation tool. No coding required.</p>
+            <div class="hero-buttons">
+                <a href="#getting-started" class="btn btn-primary">Get Started →</a>
+                <a href="#features" class="btn btn-secondary">Explore Features</a>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">400+</div>
+                    <div class="stat-label">Integrations</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">Free</div>
+                    <div class="stat-label">Open Source</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">No Code</div>
+                    <div class="stat-label">Visual Builder</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">Self</div>
+                    <div class="stat-label">Hosted</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="section-header">
+            <h2>⚡ Powerful Features</h2>
+            <p>Everything you need to build complex automations without writing code</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Visual Workflow Builder</h3>
+                <p>Drag-and-drop interface to create complex automations with real-time testing and version control.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔌</div>
+                <h3>400+ Integrations</h3>
+                <p>Connect to databases, APIs, cloud services, and more with pre-built nodes. Use HTTP Request for any API.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Multiple Trigger Options</h3>
+                <p>Webhooks, schedule-based, event-based, or manual triggers - choose what works best for your needs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Data Transformation</h3>
+                <p>Powerful JSON manipulation, data mapping, filtering, and sorting capabilities built-in.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Error Handling</h3>
+                <p>Built-in retry mechanisms, error workflows, and notification alerts to keep your automations running smoothly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Custom Code</h3>
+                <p>Write custom JavaScript code within nodes for advanced logic and transformations when needed.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="use-cases">
+        <div class="section-header">
+            <h2>🎯 Popular Use Cases</h2>
+            <p>Real-world automation scenarios you can build with n8n</p>
+        </div>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <span class="use-case-number">01</span>
+                <h3>Data Synchronization</h3>
+                <ul>
+                    <li>Sync CRM and database</li>
+                    <li>Keep spreadsheets updated</li>
+                    <li>Backup to cloud storage</li>
+                </ul>
+            </div>
+            <div class="use-case-card">
+                <span class="use-case-number">02</span>
+                <h3>Notifications & Alerts</h3>
+                <ul>
+                    <li>Form submission alerts</li>
+                    <li>Team event notifications</li>
+                    <li>SMS/Email alerts</li>
+                </ul>
+            </div>
+            <div class="use-case-card">
+                <span class="use-case-number">03</span>
+                <h3>Report Generation</h3>
+                <ul>
+                    <li>Automated daily/weekly reports</li>
+                    <li>Multi-source data aggregation</li>
+                    <li>Scheduled email reports</li>
+                </ul>
+            </div>
+            <div class="use-case-card">
+                <span class="use-case-number">04</span>
+                <h3>Customer Support</h3>
+                <ul>
+                    <li>Auto-respond to tickets</li>
+                    <li>Route inquiries to teams</li>
+                    <li>Update CRM from chats</li>
+                </ul>
+            </div>
+            <div class="use-case-card">
+                <span class="use-case-number">05</span>
+                <h3>Social Media</h3>
+                <ul>
+                    <li>Schedule posts</li>
+                    <li>Monitor mentions</li>
+                    <li>Auto-reply to comments</li>
+                </ul>
+            </div>
+            <div class="use-case-card">
+                <span class="use-case-number">06</span>
+                <h3>Lead Management</h3>
+                <ul>
+                    <li>Capture leads from forms</li>
+                    <li>Enrich lead data</li>
+                    <li>Auto-assign to sales</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section id="getting-started">
+        <div class="section-header">
+            <h2>🚀 Getting Started</h2>
+            <p>Choose your preferred installation method and start automating in minutes</p>
+        </div>
+        <div class="getting-started">
+            <div class="install-card">
+                <h3>🐳 Docker <span style="color: var(--accent); font-size: 0.9rem;">(Recommended)</span></h3>
+                <code>docker run -it --rm \
+  --name n8n \
+  -p 5678:5678 \
+  -v ~/.n8n:/home/node/.n8n \
+  n8nio/n8n</code>
+                <div class="note">✓ Quickest way to get running</div>
+            </div>
+            <div class="install-card">
+                <h3>📦 npm Installation</h3>
+                <code># Install globally
+npm install -g n8n
+
+# Start n8n
+n8n start</code>
+                <div class="note">✓ Best for local development</div>
+            </div>
+            <div class="install-card">
+                <h3>☁️ Cloud Platform</h3>
+                <p style="color: var(--gray-400); margin-top: 1rem;">Start immediately without any setup. Perfect for quick testing and small projects.</p>
+                <a href="https://n8n.io/cloud" target="_blank" class="btn btn-primary" style="margin-top: 1rem; width: 100%; justify-content: center;">Sign Up Free →</a>
+                <div class="note">✓ No installation needed</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <p style="color: var(--gray-400);">After installation, access the interface at: <strong style="color: var(--accent);">http://localhost:5678</strong></p>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture">
+        <div class="section-header">
+            <h2>🏗️ Architecture</h2>
+            <p>Understanding how n8n workflows work</p>
+        </div>
+        <div class="arch-diagram">
+            <div class="arch-node start">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚀</div>
+                <div style="font-weight: 600;">Trigger</div>
+                <div style="font-size: 0.85rem; color: var(--gray-400);">Start Node</div>
+            </div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-node process">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                <div style="font-weight: 600;">Process</div>
+                <div style="font-size: 0.85rem; color: var(--gray-400);">Action Nodes</div>
+            </div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-node end">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📤</div>
+                <div style="font-weight: 600;">Output</div>
+                <div style="font-size: 0.85rem; color: var(--gray-400);">Final Action</div>
+            </div>
+        </div>
+        <div class="components-grid">
+            <div class="component-item">
+                <h4>📋 Workflows</h4>
+                <p>Collection of connected nodes that can be triggered manually or automatically on schedule/events.</p>
+            </div>
+            <div class="component-item">
+                <h4>🔗 Nodes</h4>
+                <p>Individual actions and integrations that process and transform data, passing it to the next node.</p>
+            </div>
+            <div class="component-item">
+                <h4>🔐 Credentials</h4>
+                <p>Securely store API keys and OAuth tokens with encrypted storage for all your connections.</p>
+            </div>
+            <div class="component-item">
+                <h4>📊 Executions</h4>
+                <p>Track workflow runs, view execution history, and debug any failed runs easily.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Examples Section -->
+    <section id="workflows">
+        <div class="section-header">
+            <h2>📝 Workflow Examples</h2>
+            <p>Common automation patterns you can build in minutes</p>
+        </div>
+        <div class="workflow-examples">
+            <div class="workflow-item">
+                <div class="workflow-name">📊 Google Sheets to Email</div>
+                <div class="workflow-flow">
+                    <span class="workflow-node">Webhook</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Read Sheet</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Filter</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Send Email</span>
+                </div>
+            </div>
+            <div class="workflow-item">
+                <div class="workflow-name">🔔 New Lead Notification</div>
+                <div class="workflow-flow">
+                    <span class="workflow-node">Webhook</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">HTTP Request</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Slack Message</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Create Lead</span>
+                </div>
+            </div>
+            <div class="workflow-item">
+                <div class="workflow-name">📈 Scheduled Report</div>
+                <div class="workflow-flow">
+                    <span class="workflow-node">Schedule</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">HTTP Request</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Create Excel</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-node">Send Email</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations Section -->
+    <section id="integrations">
+        <div class="section-header">
+            <h2>🔗 Integration Options</h2>
+            <p>Connect n8n with hundreds of popular services</p>
+        </div>
+        <div class="integrations-grid">
+            <div class="integration-category">
+                <h4>💬 Communication</h4>
+                <ul>
+                    <li>Slack</li>
+                    <li>Discord</li>
+                    <li>Telegram</li>
+                    <li>Gmail</li>
+                    <li>Microsoft Teams</li>
+                </ul>
+            </div>
+            <div class="integration-category">
+                <h4>🗄️ Databases</h4>
+                <ul>
+                    <li>MySQL</li>
+                    <li>PostgreSQL</li>
+                    <li>MongoDB</li>
+                    <li>SQLite</li>
+                    <li>Redis</li>
+                </ul>
+            </div>
+            <div class="integration-category">
+                <h4>☁️ Cloud Storage</h4>
+                <ul>
+                    <li>Google Drive</li>
+                    <li>Dropbox</li>
+                    <li>AWS S3</li>
+                    <li>OneDrive</li>
+                    <li>Backblaze</li>
+                </ul>
+            </div>
+            <div class="integration-category">
+                <h4>CRM & Sales</h4>
+                <ul>
+                    <li>Salesforce</li>
+                    <li>HubSpot</li>
+                    <li>Pipedrive</li>
+                    <li>Zoho CRM</li>
+                    <li>Close</li>
+                </ul>
+            </div>
+            <div class="integration-category">
+                <h4>📧 Marketing</h4>
+                <ul>
+                    <li>Mailchimp</li>
+                    <li>SendGrid</li>
+                    <li>ConvertKit</li>
+                    <li>ActiveCampaign</li>
+                    <li>Brevo</li>
+                </ul>
+            </div>
+            <div class="integration-category">
+                <h4>💳 Payments</h4>
+                <ul>
+                    <li>Stripe</li>
+                    <li>PayPal</li>
+                    <li>Paddle</li>
+                    <li>Razorpay</li>
+                    <li>Square</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Practices Section -->
+    <section id="best-practices">
+        <div class="section-header">
+            <h2>✅ Best Practices</h2>
+            <p>Tips for building reliable and maintainable workflows</p>
+        </div>
+        <div class="practices-grid">
+            <div class="practice-card">
+                <h3>🛡️ Error Handling</h3>
+                <ul>
+                    <li>Add Error Trigger nodes</li>
+                    <li>Set up retry logic</li>
+                    <li>Use IF for conditional logic</li>
+                    <li>Log errors for debugging</li>
+                </ul>
+            </div>
+            <div class="practice-card">
+                <h3>🔒 Security</h3>
+                <ul>
+                    <li>Never commit credentials</li>
+                    <li>Use environment variables</li>
+                    <li>Enable 2FA</li>
+                    <li>Keep n8n updated</li>
+                </ul>
+            </div>
+            <div class="practice-card">
+                <h3>⚡ Performance</h3>
+                <ul>
+                    <li>Limit execution time</li>
+                    <li>Use pagination</li>
+                    <li>Clear unnecessary data</li>
+                    <li>Optimize queries</li>
+                </ul>
+            </div>
+            <div class="practice-card">
+                <h3>📁 Organization</h3>
+                <ul>
+                    <li>Name workflows clearly</li>
+                    <li>Add node descriptions</li>
+                    <li>Use tags for grouping</li>
+                    <li>Document complex logic</li>
+                </ul>
+            </div>
+            <div class="practice-card">
+                <h3>🧪 Testing</h3>
+                <ul>
+                    <li>Test with sample data</li>
+                    <li>Use Dry Run mode</li>
+                    <li>Monitor execution logs</li>
+                    <li>Test edge cases</li>
+                </ul>
+            </div>
+            <div class="practice-card">
+                <h3>📊 Monitoring</h3>
+                <ul>
+                    <li>Set up alerts</li>
+                    <li>Track success rates</li>
+                    <li>Review failed runs</li>
+                    <li>Monitor performance</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Automate?</h2>
+            <p>Start building your first workflow today and discover the power of n8n</p>
+            <a href="https://docs.n8n.io" target="_blank" class="btn btn-primary">Read Documentation →</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 n8n Automation Project. Built with ❤️ for automation enthusiasts.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://docs.n8n.io" target="_blank">Documentation</a> • 
+            <a href="https://community.n8n.io" target="_blank">Community</a> • 
+            <a href="https://n8n.io/workflows" target="_blank">Templates</a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll-based navbar transparency
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(10, 15, 28, 0.95)';
+            } else {
+                nav.style.background = 'rgba(10, 15, 28, 0.8)';
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .use-case-card, .install-card, .practice-card, .integration-category').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
